@@ -31,10 +31,8 @@ class Employee():
         self.id = id
         self.name = name
 
-
     def __str__(self):
         return 'ID: {} Name {}'.format(self.id, self.name)
-
 
 
 class PhoneAssignments():
@@ -43,25 +41,33 @@ class PhoneAssignments():
         self.phones = []
         self.employees = []
 
-
     def add_employee(self, employee):
         # TODO raise exception if two employees with same ID are added
+        for e in self.employees:
+            if e.id == employee.id:
+                raise EmployeeError("{} already in system.".format(employee))
         self.employees.append(employee)
-
 
     def add_phone(self, phone):
         # TODO raise exception if two phones with same ID are added
+        for p in self.phones:
+            if phone.id == p.id:
+                raise PhoneError("{{ already in system".format(phone))
         self.phones.append(phone)
-
 
     def assign(self, phone_id, employee):
         # Find phone in phones list
-        # TODO if phone is already assigned to an employee, do not change list, raise exception
         # TODO if employee already has a phone, do not change list, and raise exception
         # TODO if employee already has this phone, don't make any changes. This should NOT raise an exception.
         for phone in self.phones:
             if phone.id == phone_id:
-                phone.assign(employee.id)
+                if phone.is_assigned():
+                    if phone.employee_id == employee.id:
+                        return
+                    else:
+                        raise PhoneError("Phone ID #{}: Is already Assigned". format(phone_id))
+                else:
+                    phone.assign(employee.id)
                 return
 
 
@@ -87,4 +93,8 @@ class PhoneAssignments():
 
 
 class PhoneError(Exception):
+    pass
+
+
+class EmployeeError(Exception):
     pass

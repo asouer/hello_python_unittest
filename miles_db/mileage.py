@@ -1,18 +1,22 @@
 import sqlite3
+import miles_db.valid as valid
 
 db_url = 'mileage.db'   # Assumes the table miles have already been created.
 
+
 def add_miles(vehicle, new_miles):
-    '''If the vehicle is in the database, increment the number of miles by new_miles
+    """ If the vehicle is in the database, increment the number of miles by new_miles
     If the vehicle is not in the database, add the vehicle and set the number of miles to new_miles
 
     If the vehicle is None or new_miles is not a positive number, raise Error
-    '''
+    """
 
     if not vehicle:
         raise Exception('Provide a vehicle name')
-    if isinstance(new_miles, float) or new_miles < 0:
+    if not isinstance(new_miles, float) or new_miles < 0:
         raise Exception('Provide a positive number for new miles')
+
+    vehicle = vehicle.upper()
 
     conn = sqlite3.connect(db_url)
     cursor = conn.cursor()
@@ -25,10 +29,11 @@ def add_miles(vehicle, new_miles):
 
 def main():
     while True:
-        vehicle = input('Enter vehicle name or enter to quit')
+        vehicle = input('Enter vehicle name or enter to quit: ')
         if not vehicle:
             break
-        miles = float(input('Enter new miles for %s' % vehicle)) ## TODO input validation
+
+        miles = valid.mileage(vehicle)
 
         add_miles(vehicle, miles)
 

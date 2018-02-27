@@ -42,14 +42,12 @@ class PhoneAssignments():
         self.employees = []
 
     def add_employee(self, employee):
-        # TODO raise exception if two employees with same ID are added
         for e in self.employees:
             if e.id == employee.id:
                 raise EmployeeError("{} already in system.".format(employee))
         self.employees.append(employee)
 
     def add_phone(self, phone):
-        # TODO raise exception if two phones with same ID are added
         for p in self.phones:
             if phone.id == p.id:
                 raise PhoneError("{{ already in system".format(phone))
@@ -67,7 +65,11 @@ class PhoneAssignments():
                     else:
                         raise PhoneError("Phone ID #{}: Is already Assigned". format(phone_id))
                 else:
-                    phone.assign(employee.id)
+                    for p in self.phones:
+                        if p.employee_id == employee.id:
+                            raise PhoneError("employee alredy has phone")
+                        else:
+                            phone.assign(employee.id)
                 return
 
 

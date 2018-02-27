@@ -3,6 +3,7 @@ import mileage
 import sqlite3
 from unittest import TestCase
 
+
 class TestMileageDB(TestCase):
 
     test_db_url = 'test_miles.db'
@@ -17,31 +18,27 @@ class TestMileageDB(TestCase):
         conn.commit()
         conn.close()
 
-
     def test_add_new_vehicle(self):
         mileage.add_miles('Blue Car', 100)
-        expected = { 'Blue Car': 100 }
+        expected = {'Blue Car': 100}
         self.compare_db_to_expected(expected)
 
         mileage.add_miles('Green Car', 50)
         expected['Green Car'] = 50
         self.compare_db_to_expected(expected)
 
-
     def test_increase_miles_for_vehicle(self):
         mileage.add_miles('Red Car', 100)
-        expected = { 'Red Car': 100 }
+        expected = {'Red Car': 100}
         self.compare_db_to_expected(expected)
 
         mileage.add_miles('Red Car', 50)
         expected['Red Car'] = 100 + 50
         self.compare_db_to_expected(expected)
 
-
     def test_add_new_vehicle_no_vehicle(self):
         with self.assertRaises(Exception):
             mileage.addMiles(None, 100)
-
 
     def test_add_new_vehicle_invalid_new_miles(self):
         with self.assertRaises(Exception):
@@ -50,7 +47,6 @@ class TestMileageDB(TestCase):
             mileage.addMiles('Car', 'abc')
         with self.assertRaises(Exception):
             mileage.addMiles('Car', '12.def')
-
 
     # This is not a test method, instead, it's used by the test methods
     def compare_db_to_expected(self, expected):
